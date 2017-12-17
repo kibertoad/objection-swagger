@@ -13,7 +13,7 @@ Swagger definition generator for Objection.js models
  * @param {Model|Model[]} modelParam - model(s) to generate schemas for
  * @returns {GeneratedSwaggerYaml[]} generated JSON schemas in YAML format
  */
-function generateSwagger(modelParam)
+function generateSchema(modelParam)
 ```
 
 ```
@@ -23,5 +23,5 @@ function generateSwagger(modelParam)
  * @param [string] targetDir - directory to write generated schemas to. Do not add '/' to the end.
  * @returns {Promise} - promise that is resolved after schemas are written
  */
-function saveSwagger(modelParam, targetDir)
+function saveSchema(modelParam, targetDir)
 ```

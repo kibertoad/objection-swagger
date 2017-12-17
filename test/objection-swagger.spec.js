@@ -17,29 +17,29 @@ describe('objection-swagger', () => {
         global.sandbox.restore();
     });
 
-    it('generates model yaml from single model', async () => {
-        const result = objectionSwagger.generateSwagger(SimpleModel);
+    it('generates model schema yaml from single model', async () => {
+        const result = objectionSwagger.generateSchema(SimpleModel);
 
         assert.lengthOf(result, 1);
         assert.equal(result[0].name, 'SimpleModel');
         assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
     });
 
-    it('generates model yaml from array of models', async () => {
-        const result = objectionSwagger.generateSwagger([SimpleModel]);
+    it('generates model schema yaml from array of models', async () => {
+        const result = objectionSwagger.generateSchema([SimpleModel]);
 
         assert.lengthOf(result, 1);
         assert.equal(result[0].name, 'SimpleModel');
         assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
     });
 
-    it('saves model yaml', async () => {
+    it('saves model schema yaml', async () => {
         let writeResult;
         const writeStub = sinon.stub(fileWriter, 'writeAll').callsFake((writeParams) => {
             writeResult = writeParams;
         });
 
-        const result = objectionSwagger.saveSwagger(SimpleModel, 'dummyDir');
+        const result = objectionSwagger.saveSchema(SimpleModel, 'dummyDir');
 
         assert.lengthOf(writeResult, 1);
         assert.equal(writeResult[0].targetFile, 'dummyDir/SimpleModel.yaml');
