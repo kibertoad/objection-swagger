@@ -11,8 +11,8 @@
     "test": "mocha test/**/*.spec.js"
   },
   "dependencies": {
-    "lodash": "^4.17.4",
     "js-yaml": "^3.10.0",
+    "lodash": "^4.17.4",
     "validation-utils": "^2.0.1"
   },
   "devDependencies": {
