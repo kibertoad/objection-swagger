@@ -13,7 +13,7 @@ const SIMPLE_MODEL_SCHEMA = 'type: object\nrequired: []\nadditionalProperties: t
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\nchildren:\n  type: array\n  items:\n    type: object\n';
+const PARENT_MODEL = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
 const CHILD_MODEL = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
 describe('objection-swagger', () => {
