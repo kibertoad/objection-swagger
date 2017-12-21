@@ -1,6 +1,6 @@
 const Model = require('objection').Model;
 
-class SimpleModel extends Model {
+class ModelWithPrivateFields extends Model {
     static get tableName() {
         return 'sources';
     }
@@ -16,10 +16,8 @@ class SimpleModel extends Model {
             additionalProperties: true,
 
             properties: {
-                intAttr: { type: 'integer' },
                 stringAttr: { type: 'string' },
-                stringAttrOptional: { type: ['string', 'null'] },
-                dateTimeAttr: { type: 'string', format: 'date-time' }
+				stringAttrPrivate: { type: 'string', private: true }
             }
         };
     }
@@ -27,4 +25,4 @@ class SimpleModel extends Model {
 
 }
 
-module.exports = SimpleModel;
+module.exports = ModelWithPrivateFields;
