@@ -1,14 +1,6 @@
 const Model = require('objection').Model;
 
 class SimpleModel extends Model {
-    static get tableName() {
-        return 'sources';
-    }
-
-    static get idColumn() {
-        return 'id';
-    }
-
     static get jsonSchema() {
         return {
             type: 'object',

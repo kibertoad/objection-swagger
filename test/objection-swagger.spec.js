@@ -5,11 +5,16 @@ const fileWriter = require('../lib/file-writer');
 const objectionSwagger = require('../lib/objection-swagger');
 const SimpleModel = require('./models/SimpleModel');
 const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
+const ParentModel  = require('./models/ParentModel');
+const ChildModel = require('./models/ChildModel');
 
 const SIMPLE_MODEL_SCHEMA = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  stringAttr:\n'
 	+ '    type: string\n  stringAttrOptional:\n    type:\n      - string\n      - \'null\'\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
+
+const PARENT_MODEL = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\nchildren:\n  type: array\n  items:\n    type: object\n';
+const CHILD_MODEL = 'type: object\nrequired: []\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
 describe('objection-swagger', () => {
 	beforeEach(() => {
@@ -55,5 +60,21 @@ describe('objection-swagger', () => {
 		assert.lengthOf(result, 1);
 		assert.equal(result[0].name, 'ModelWithPrivateFields');
 		assert.equal(result[0].schema, MODEL_WITH_PRIVATE_FIELDS_SCHEMA);
+	});
+
+	it('generates parent model schema correctly', async () => {
+		const result = objectionSwagger.generateSchema(ParentModel);
+
+		assert.lengthOf(result, 1);
+		assert.equal(result[0].name, 'ParentModel');
+		assert.equal(result[0].schema, PARENT_MODEL);
+	});
+
+	it('generates child model schema correctly', async () => {
+		const result = objectionSwagger.generateSchema(ChildModel);
+
+		assert.lengthOf(result, 1);
+		assert.equal(result[0].name, 'ChildModel');
+		assert.equal(result[0].schema, CHILD_MODEL);
 	});
 });
