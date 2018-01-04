@@ -8,13 +8,13 @@ const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
 
-const SIMPLE_MODEL_SCHEMA = 'type: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
+const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
-const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'type: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
+const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL = 'type: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
-const CHILD_MODEL = 'type: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
+const PARENT_MODEL = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
+const CHILD_MODEL = 'title: ChildModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
 describe('objection-swagger', () => {
 	beforeEach(() => {

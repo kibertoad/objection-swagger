@@ -3,6 +3,7 @@ const Model = require('objection').Model;
 class SimpleModel extends Model {
     static get jsonSchema() {
         return {
+			title:  'SimpleModel',
             type: 'object',
             required: [],
             additionalProperties: true,

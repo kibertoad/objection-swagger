@@ -3,6 +3,7 @@ const Model = require('objection').Model;
 class ModelWithPrivateFields extends Model {
     static get jsonSchema() {
         return {
+			title:  'ModelWithPrivateFields',
             type: 'object',
             required: [],
             additionalProperties: true,
