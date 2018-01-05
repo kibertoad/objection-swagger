@@ -1,6 +1,7 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
 
+const Options = require('../lib/Options');
 const fileWriter = require('../lib/file-writer');
 const objectionSwagger = require('../lib/objection-swagger');
 const SimpleModel = require('./models/SimpleModel');
@@ -9,6 +10,9 @@ const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
 
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
+	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
+
+const SIMPLE_MODEL_SCHEMA_NO_INTERNAL = 'title: SimpleModel\ntype: object\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
@@ -31,6 +35,14 @@ describe('objection-swagger', () => {
 		assert.lengthOf(result, 1);
 		assert.equal(result[0].name, 'SimpleModel');
 		assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
+	});
+
+	it('generates model schema yaml from single model, excludes internal fields', async () => {
+		const result = objectionSwagger.generateSchema(SimpleModel, { excludeInternalData: true });
+
+		assert.lengthOf(result, 1);
+		assert.equal(result[0].name, 'SimpleModel');
+		assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA_NO_INTERNAL);
 	});
 
 	it('generates model schema yaml from array of models', async () => {
