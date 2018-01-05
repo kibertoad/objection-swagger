@@ -3,6 +3,6 @@ const Options = require('./lib/Options');
 
 module.exports = {
 	generateSchema: objectionSwagger.generateSchema,
-	processSchema: objectionSwagger.saveSchema,
+	saveSchema: objectionSwagger.saveSchema,
 	Options
 };
