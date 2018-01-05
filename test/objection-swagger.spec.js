@@ -20,6 +20,8 @@ const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: o
 const PARENT_MODEL = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
 const CHILD_MODEL = 'title: ChildModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
+const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      properties:\n        stringAttr:\n          type: string\n';
+
 describe('objection-swagger', () => {
 	beforeEach(() => {
 		global.sandbox = sinon.sandbox.create();
@@ -80,6 +82,14 @@ describe('objection-swagger', () => {
 		assert.lengthOf(result, 1);
 		assert.equal(result[0].name, 'ParentModel');
 		assert.equal(result[0].schema, PARENT_MODEL);
+	});
+
+	it('generates parent model schema without internal fields correctly', async () => {
+		const result = objectionSwagger.generateSchema(ParentModel, { excludeInternalData: true });
+
+		assert.lengthOf(result, 1);
+		assert.equal(result[0].name, 'ParentModel');
+		assert.equal(result[0].schema, PARENT_MODEL_NO_INTERNAL);
 	});
 
 	it('generates child model schema correctly', async () => {
