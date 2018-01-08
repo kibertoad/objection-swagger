@@ -1,6 +1,9 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
 const mkdirp = require('mkdirp');
+const { promisify } = require('util');
+const fs = require('fs');
+const unlinkAsync = promisify(fs.unlink);
 
 const Options = require('../lib/Options');
 const fileWriter = require('../lib/file-writer');
@@ -107,6 +110,7 @@ describe('objection-swagger', () => {
 		it('saves model schema yaml from single model', async () => {
 			await mkdirp('build');
 			await objectionSwagger.saveSchema(ParentModel, 'build', {useEntityRefs: true});
+			await unlinkAsync('build/ParentModel.yaml');
 		});
 	});
 });
