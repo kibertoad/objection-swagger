@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const mkdirp = require('mkdirp');
+const mkdirp = require('mkdirp-promise');
 const { promisify } = require('util');
 const fs = require('fs');
 const unlinkAsync = promisify(fs.unlink);
@@ -12,6 +12,7 @@ const SimpleModel = require('./models/SimpleModel');
 const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
+const ParentModelClassReference = require('./models/ParentModelClassReference');
 
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
@@ -28,11 +29,11 @@ const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\
 
 describe('objection-swagger', () => {
 	beforeEach(() => {
-		global.sandbox = sinon.sandbox.create();
+        global.sinon = sinon.sandbox.create();
 	});
 
 	afterEach(() => {
-		global.sandbox.restore();
+		global.sinon.restore();
 	});
 
 	describe('generateSchema', () => {
@@ -62,7 +63,7 @@ describe('objection-swagger', () => {
 
 		it('saves model schema yaml', async () => {
 			let writeResult;
-			const writeStub = sinon.stub(fileWriter, 'writeAll').callsFake((writeParams) => {
+			const writeStub = global.sinon.stub(fileWriter, 'writeAll').callsFake((writeParams) => {
 				writeResult = writeParams;
 			});
 
@@ -88,6 +89,14 @@ describe('objection-swagger', () => {
 			assert.equal(result[0].name, 'ParentModel');
 			assert.equal(result[0].schema, PARENT_MODEL);
 		});
+
+        it('generates parent model with class reference schema correctly', async () => {
+            const result = objectionSwagger.generateSchema(ParentModelClassReference);
+
+            assert.lengthOf(result, 1);
+            assert.equal(result[0].name, 'ParentModel');
+            assert.equal(result[0].schema, PARENT_MODEL);
+        });
 
 		it('generates parent model schema without internal fields correctly', async () => {
 			const result = objectionSwagger.generateSchema(ParentModel, { excludeInternalData: true });
