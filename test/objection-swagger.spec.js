@@ -13,6 +13,7 @@ const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
 const ParentModelClassReference = require('./models/ParentModelClassReference');
+const ParentModelSelfReference = require('./models/ParentModelSelfReference');
 
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
@@ -22,7 +23,8 @@ const SIMPLE_MODEL_SCHEMA_NO_INTERNAL = 'title: SimpleModel\ntype: object\nprope
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
+const PARENT_MODEL                = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
+const PARENT_MODEL_SELF_REFERENCE = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
 const CHILD_MODEL = 'title: ChildModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
 const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      properties:\n        stringAttr:\n          type: string\n';
@@ -96,6 +98,14 @@ describe('objection-swagger', () => {
             assert.lengthOf(result, 1);
             assert.equal(result[0].name, 'ParentModel');
             assert.equal(result[0].schema, PARENT_MODEL);
+        });
+
+        it('generates parent model with self reference schema correctly', async () => {
+            const result = objectionSwagger.generateSchema(ParentModelSelfReference);
+
+            assert.lengthOf(result, 1);
+            assert.equal(result[0].name, 'ParentModel');
+            assert.equal(result[0].schema, PARENT_MODEL_SELF_REFERENCE);
         });
 
 		it('generates parent model schema without internal fields correctly', async () => {
