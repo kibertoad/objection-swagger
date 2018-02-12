@@ -23,11 +23,11 @@ const SIMPLE_MODEL_SCHEMA_NO_INTERNAL = 'title: SimpleModel\ntype: object\nprope
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL                = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
+const PARENT_MODEL                = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child entity\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n';
 const PARENT_MODEL_SELF_REFERENCE = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
-const CHILD_MODEL = 'title: ChildModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
+const CHILD_MODEL = 'title: ChildModel\ntype: object\ndescription: child\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      properties:\n        stringAttr:\n          type: string\n';
+const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child entity\n      properties:\n        stringAttr:\n          type: string\n';
 
 describe('objection-swagger', () => {
 	beforeEach(() => {

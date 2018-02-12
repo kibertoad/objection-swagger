@@ -5,6 +5,7 @@ class ChildModel extends Model {
 		return {
 			title:  'ChildModel',
 			type: 'object',
+			description: 'child',
 			required: [],
 			additionalProperties: true,
 

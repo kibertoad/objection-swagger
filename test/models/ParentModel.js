@@ -19,6 +19,7 @@ class ParentModel extends Model {
 		return {
 			children: {
 				relation: Model.HasManyRelation,
+                description: 'child entity',
 				modelClass: `${__dirname}/ChildModel`,
 				join: {
 					from: 'parentModels.id',
