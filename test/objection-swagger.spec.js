@@ -9,6 +9,8 @@ const Options = require('../lib/Options');
 const fileWriter = require('../lib/file-writer');
 const objectionSwagger = require('../lib/objection-swagger');
 const SimpleModel = require('./models/SimpleModel');
+const SimpleModelInvalidRequired = require('./models/SimpleModelInvalidRequired');
+const SimpleModelNoRequired = require('./models/SimpleModelNoRequired');
 const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
@@ -18,12 +20,14 @@ const ParentModelSelfReference = require('./models/ParentModelSelfReference');
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
+const SIMPLE_MODEL_SCHEMA_GENERATED_REQUIRE = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\nrequired:\n  - intAttr\n  - stringAttr\n  - dateTimeAttr\n';
+
 const SIMPLE_MODEL_SCHEMA_NO_INTERNAL = 'title: SimpleModel\ntype: object\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL                = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n    description: child entity\n';
+const PARENT_MODEL = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n    description: child entity\n';
 const PARENT_MODEL_SELF_REFERENCE = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
 const CHILD_MODEL = 'title: ChildModel\ntype: object\ndescription: child\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
@@ -31,7 +35,7 @@ const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\
 
 describe('objection-swagger', () => {
 	beforeEach(() => {
-        global.sinon = sinon.sandbox.create();
+		global.sinon = sinon.sandbox.create();
 	});
 
 	afterEach(() => {
@@ -45,6 +49,20 @@ describe('objection-swagger', () => {
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'SimpleModel');
 			assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
+		});
+
+		it('fails to generate model schema yaml from single model', async () => {
+			assert.throws(() => {
+				objectionSwagger.generateSchema(SimpleModelInvalidRequired);
+			}, /explicitly defined as required and from model it looks like it is nullable/);
+		});
+
+		it('fills required field for a model', async () => {
+			const result = objectionSwagger.generateSchema(SimpleModelNoRequired);
+
+			assert.lengthOf(result, 1);
+			assert.equal(result[0].name, 'SimpleModel');
+			assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA_GENERATED_REQUIRE);
 		});
 
 		it('generates model schema yaml from single model, excludes internal fields', async () => {
@@ -92,21 +110,21 @@ describe('objection-swagger', () => {
 			assert.equal(result[0].schema, PARENT_MODEL);
 		});
 
-        it('generates parent model with class reference schema correctly', async () => {
-            const result = objectionSwagger.generateSchema(ParentModelClassReference);
+		it('generates parent model with class reference schema correctly', async () => {
+			const result = objectionSwagger.generateSchema(ParentModelClassReference);
 
-            assert.lengthOf(result, 1);
-            assert.equal(result[0].name, 'ParentModel');
-            assert.equal(result[0].schema, PARENT_MODEL);
-        });
+			assert.lengthOf(result, 1);
+			assert.equal(result[0].name, 'ParentModel');
+			assert.equal(result[0].schema, PARENT_MODEL);
+		});
 
-        it('generates parent model with self reference schema correctly', async () => {
-            const result = objectionSwagger.generateSchema(ParentModelSelfReference);
+		it('generates parent model with self reference schema correctly', async () => {
+			const result = objectionSwagger.generateSchema(ParentModelSelfReference);
 
-            assert.lengthOf(result, 1);
-            assert.equal(result[0].name, 'ParentModel');
-            assert.equal(result[0].schema, PARENT_MODEL_SELF_REFERENCE);
-        });
+			assert.lengthOf(result, 1);
+			assert.equal(result[0].name, 'ParentModel');
+			assert.equal(result[0].schema, PARENT_MODEL_SELF_REFERENCE);
+		});
 
 		it('generates parent model schema without internal fields correctly', async () => {
 			const result = objectionSwagger.generateSchema(ParentModel, { excludeInternalData: true });
@@ -128,7 +146,7 @@ describe('objection-swagger', () => {
 	describe('saveSchema', () => {
 		it('saves model schema yaml from single model', async () => {
 			await mkdirp('build');
-			await objectionSwagger.saveSchema(ParentModel, 'build', {useEntityRefs: true});
+			await objectionSwagger.saveSchema(ParentModel, 'build', { useEntityRefs: true });
 			await unlinkAsync('build/ParentModel.yaml');
 		});
 	});

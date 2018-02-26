@@ -1,6 +1,6 @@
 {
   "name": "objection-swagger",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kibertoad/objection-swagger.git"
@@ -18,11 +18,11 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "knex": "^0.14.3",
+    "knex": "0.14.3",
     "mkdirp-promise": "^5.0.1",
-    "mocha": "^5.0.0",
+    "mocha": "^5.0.1",
     "nyc": "^11.4.1",
-    "objection": "^0.9.4",
-    "sinon": "^4.3.0"
+    "objection": "^1.0.0",
+    "sinon": "^4.4.2"
   }
 }
