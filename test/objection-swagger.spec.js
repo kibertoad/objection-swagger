@@ -8,6 +8,7 @@ const unlinkAsync = promisify(fs.unlink);
 const Options = require('../lib/Options');
 const fileWriter = require('../lib/file-writer');
 const objectionSwagger = require('../lib/objection-swagger');
+
 const SimpleModel = require('./models/SimpleModel');
 const SimpleModelInvalidRequired = require('./models/SimpleModelInvalidRequired');
 const SimpleModelNoRequired = require('./models/SimpleModelNoRequired');
@@ -16,6 +17,7 @@ const ParentModel = require('./models/ParentModel');
 const ChildModel = require('./models/ChildModel');
 const ParentModelClassReference = require('./models/ParentModelClassReference');
 const ParentModelSelfReference = require('./models/ParentModelSelfReference');
+const EmptyModel = require('./models/EmptyModel');
 
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
@@ -140,6 +142,13 @@ describe('objection-swagger', () => {
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'ChildModel');
 			assert.equal(result[0].schema, CHILD_MODEL);
+		});
+
+		it('correctly processes model without schema', async () => {
+			const result = objectionSwagger.generateSchema(EmptyModel);
+			assert.lengthOf(result, 1);
+			assert.equal(result[0].name, 'EmptyModel');
+			assert.deepEqual(result[0].schema, '{}\n');
 		});
 	});
 
