@@ -26,3 +26,17 @@ function generateSchema(modelParam)
  */
 function saveSchema(modelParam, targetDir)
 ```
+
+
+```
+/**
+ * Generates and saves into specified directory JSON-schema YAML files for inclusion in Swagger specifications from given
+ * JSON-schemas
+ * @param {Object|Object[]} schemaParam - JSON-Schema(s) to generate yamls for. Title param is used as a filename
+ * @param {string} targetDir - directory to write generated schemas to. Do not add '/' to the end.
+ * @param {Options} opts
+ * @returns {Promise} - promise that is resolved after yamls are written
+ */
+function saveNonModelSchema(schemaParam, targetDir, opts = {}) {
+```
+}
