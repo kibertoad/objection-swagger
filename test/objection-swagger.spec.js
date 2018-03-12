@@ -4,6 +4,7 @@ const mkdirp = require('mkdirp-promise');
 const { promisify } = require('util');
 const fs = require('fs');
 const unlinkAsync = promisify(fs.unlink);
+const yaml = require('js-yaml');
 
 const Options = require('../lib/Options');
 const fileWriter = require('../lib/file-writer');
@@ -18,6 +19,8 @@ const ChildModel = require('./models/ChildModel');
 const ParentModelClassReference = require('./models/ParentModelClassReference');
 const ParentModelSelfReference = require('./models/ParentModelSelfReference');
 const EmptyModel = require('./models/EmptyModel');
+
+const SimpleResponseSchema = require('./schemas/simple.response.schema');
 
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
@@ -157,6 +160,39 @@ describe('objection-swagger', () => {
 			await mkdirp('build');
 			await objectionSwagger.saveSchema(ParentModel, 'build', { useEntityRefs: true });
 			await unlinkAsync('build/ParentModel.yaml');
+		});
+	});
+
+	describe('saveNonModelSchema', () => {
+		it('saves non-model schema yaml from single schema', async () => {
+			await mkdirp('build');
+			await objectionSwagger.saveNonModelSchema(SimpleResponseSchema, 'build');
+			const simpleModelSchema = yaml.load(fs.readFileSync('build/SimpleData.yaml'));
+			await unlinkAsync('build/SimpleData.yaml');
+			assert.deepEqual(simpleModelSchema,
+				{
+					title: 'SimpleData',
+					type: 'object',
+					additionalProperties: false,
+					properties: {
+						id: {
+							'type': 'integer'
+						},
+						fieldKey: {
+							'type': 'string'
+						},
+						fieldText: {
+							'type': 'string'
+						},
+						isMandatory: {
+							'type': 'boolean'
+						},
+						isFreeformField: {
+							'type': 'boolean'
+						}
+					}
+				}
+			);
 		});
 	});
 });
