@@ -22,6 +22,8 @@ const EmptyModel = require('./models/EmptyModel');
 
 const SimpleResponseSchema = require('./schemas/simple.response.schema');
 
+const QueryParamSchema = require('./schemas/simple.query.schema');
+
 const SIMPLE_MODEL_SCHEMA = 'title: SimpleModel\ntype: object\nadditionalProperties: true\nproperties:\n  intAttr:\n    type: integer\n  '
 	+ 'stringAttr:\n    type: string\n  stringAttrOptional:\n    type: string\n  dateTimeAttr:\n    type: string\n    format: date-time\n';
 
@@ -192,6 +194,59 @@ describe('objection-swagger', () => {
 						}
 					}
 				}
+			);
+		});
+	});
+
+	describe('saveQueryParamSchema', () => {
+		it('saves query param schema yaml from single schema', async () => {
+			await mkdirp('build');
+			await objectionSwagger.saveQueryParamSchema(QueryParamSchema, 'build');
+			const simpleModelSchema = yaml.load(fs.readFileSync('build/SimpleQuery.yaml'));
+			await unlinkAsync('build/SimpleQuery.yaml');
+			assert.deepEqual(simpleModelSchema,
+				[
+					{
+						description: 'The statuses to retrieve data for',
+						in: 'query',
+						items: {
+							'enum': [
+								'active',
+								'inactive'
+							],
+							'type': 'string',
+						},
+						name: 'statuses',
+						required: true,
+						type: 'array'
+					},
+					{
+						description: 'The lower bound of the time period',
+						format: 'date-time',
+						in: 'query',
+						name: 'updatedAtFrom',
+						required: false,
+						type: 'string'
+					},
+					{
+						description: 'The upper bound of the time period',
+						format: 'date-time',
+						in: 'query',
+						name: 'updatedAtTo',
+						required: false,
+						type: 'string'
+					},
+					{
+						description: 'The assignee id to filter by',
+						in: 'query',
+						items: {
+							'type': 'integer'
+						},
+						name: 'assigneeIds',
+						required: true,
+						type: 'array'
+					}
+				]
 			);
 		});
 	});
