@@ -37,7 +37,7 @@ function saveSchema(modelParam, targetDir)
  * @param {Options} opts
  * @returns {Promise} - promise that is resolved after yamls are written
  */
-function saveNonModelSchema(schemaParam, targetDir, opts = {}) {
+function saveNonModelSchema(schemaParam, targetDir, opts = {})
 ```
 
 ```
@@ -49,7 +49,15 @@ function saveNonModelSchema(schemaParam, targetDir, opts = {}) {
  * @param {Options} opts
  * @returns {Promise} - promise that is resolved after yamls are written
  */
-function saveQueryParamSchema(schemaParam, targetDir, opts = {}) {
+function saveQueryParamSchema(schemaParam, targetDir, opts = {})
 ```
 
-}
+
+```
+/**
+ * Transforms Swagger query params into correct JSON Schema
+ * @param {Object} queryModel - Swagger query params model
+ * @returns {Object} JSON Schema object
+ */
+transformers.fromSwaggerQuerySchema(queryModel)
+```
