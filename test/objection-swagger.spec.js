@@ -15,6 +15,7 @@ const SimpleModelInvalidRequired = require('./models/SimpleModelInvalidRequired'
 const SimpleModelNoRequired = require('./models/SimpleModelNoRequired');
 const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
+const NestedModel = require('./models/NestedModel');
 const ChildModel = require('./models/ChildModel');
 const ParentModelClassReference = require('./models/ParentModelClassReference');
 const ParentModelSelfReference = require('./models/ParentModelSelfReference');
@@ -34,11 +35,7 @@ const SIMPLE_MODEL_SCHEMA_NO_INTERNAL = 'title: SimpleModel\ntype: object\nprope
 
 const MODEL_WITH_PRIVATE_FIELDS_SCHEMA = 'title: ModelWithPrivateFields\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
 
-const PARENT_MODEL = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child\n      additionalProperties: true\n      properties:\n        stringAttr:\n          type: string\n    description: child entity\n';
 const PARENT_MODEL_SELF_REFERENCE = 'title: ParentModel\ntype: object\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      type: object\n';
-const CHILD_MODEL = 'title: ChildModel\ntype: object\ndescription: child\nadditionalProperties: true\nproperties:\n  stringAttr:\n    type: string\n';
-
-const PARENT_MODEL_NO_INTERNAL = 'title: ParentModel\ntype: object\nproperties:\n  stringAttr:\n    type: string\n  children:\n    type: array\n    items:\n      title: ChildModel\n      type: object\n      description: child\n      properties:\n        stringAttr:\n          type: string\n    description: child entity\n';
 
 describe('objection-swagger', () => {
 	beforeEach(() => {
@@ -114,7 +111,72 @@ describe('objection-swagger', () => {
 
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'ParentModel');
-			assert.equal(result[0].schema, PARENT_MODEL);
+			assert.deepEqual(yaml.load(result[0].schema), {
+				"additionalProperties": true,
+				"properties": {
+					"children": {
+						"description": "child entity",
+						"items": {
+							"additionalProperties": true,
+							"description": "child",
+							"properties": {
+								"stringAttr": {
+									"type": "string"
+								},
+								"stringAttrOptional": {
+									"type": "string"
+								}
+							},
+							"title": "ChildModel",
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"stringAttr": {
+						"type": "string"
+					}
+				},
+				"title": "ParentModel",
+				"type": "object"
+			});
+		});
+
+		it('generates nested model schema correctly', async () => {
+			const result = objectionSwagger.generateSchema(NestedModel);
+
+			assert.lengthOf(result, 1);
+			assert.equal(result[0].name, 'NestedModel');
+			assert.deepEqual(yaml.load(result[0].schema), {
+				"additionalProperties": false,
+				"properties": {
+					"mandatoryPreferences": {
+						"additionalProperties": false,
+						"properties": {
+							"mandatoryUser": {
+								"type": "integer"
+							},
+							"substitutedUser": {
+								"type": "integer"
+							}
+						},
+						"required": [
+							"mandatoryUser"
+						],
+						"type": "object"
+					},
+					"preferences": {
+						"additionalProperties": false,
+						"properties": {
+							"substitutedUser": {
+								"type": "integer"
+							}
+						},
+						"type": "object"
+					}
+				},
+				"title": "UserPreferencesModel",
+				"type": "object"
+			});
 		});
 
 		it('generates parent model with class reference schema correctly', async () => {
@@ -122,7 +184,34 @@ describe('objection-swagger', () => {
 
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'ParentModel');
-			assert.equal(result[0].schema, PARENT_MODEL);
+			assert.deepEqual(yaml.load(result[0].schema), {
+				"additionalProperties": true,
+				"properties": {
+					"children": {
+						"description": "child entity",
+						"items": {
+							"additionalProperties": true,
+							"description": "child",
+							"properties": {
+								"stringAttr": {
+									"type": "string"
+								},
+								"stringAttrOptional": {
+									"type": "string"
+								}
+							},
+							"title": "ChildModel",
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"stringAttr": {
+						"type": "string"
+					}
+				},
+				"title": "ParentModel",
+				"type": "object"
+			});
 		});
 
 		it('generates parent model with self reference schema correctly', async () => {
@@ -138,7 +227,32 @@ describe('objection-swagger', () => {
 
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'ParentModel');
-			assert.equal(result[0].schema, PARENT_MODEL_NO_INTERNAL);
+			assert.deepEqual(yaml.load(result[0].schema), {
+				"properties": {
+					"children": {
+						"description": "child entity",
+						"items": {
+							"description": "child",
+							"properties": {
+								"stringAttr": {
+									"type": "string"
+								},
+								"stringAttrOptional": {
+									"type": "string"
+								}
+							},
+							"title": "ChildModel",
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"stringAttr": {
+						"type": "string"
+					}
+				},
+				"title": "ParentModel",
+				"type": "object"
+			});
 		});
 
 		it('generates child model schema correctly', async () => {
@@ -146,7 +260,20 @@ describe('objection-swagger', () => {
 
 			assert.lengthOf(result, 1);
 			assert.equal(result[0].name, 'ChildModel');
-			assert.equal(result[0].schema, CHILD_MODEL);
+			assert.deepEqual(yaml.load(result[0].schema), {
+				"additionalProperties": true,
+				"description": "child",
+				"properties": {
+					"stringAttr": {
+						"type": "string"
+					},
+					"stringAttrOptional": {
+						"type": "string"
+					}
+				},
+				"title": "ChildModel",
+				"type": "object"
+			});
 		});
 
 		it('correctly processes model without schema', async () => {
