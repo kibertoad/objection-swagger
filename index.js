@@ -7,5 +7,6 @@ module.exports = {
 	saveNonModelSchema: objectionSwagger.saveNonModelSchema,
 	saveQueryParamSchema : objectionSwagger.saveQueryParamSchema,
 	saveSchema: objectionSwagger.saveSchema,
-	transformers
+	transformers,
+	Options
 };
