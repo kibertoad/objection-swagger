@@ -35,6 +35,15 @@ class RecursiveChildModel extends Model {
 					from: 'recursiveChildModels.id',
 					to: 'childModels.parentId'
 				}
+			},
+			recursiveChildren: {
+				relation: Model.HasManyRelation,
+				description: 'recursive child entity',
+				modelClass: `${__dirname}/RecursiveChildModel`,
+				join: {
+					from: 'recursiveChildModels.id',
+					to: 'recursiveChildModels.parentId'
+				}
 			}
 		};
 	}

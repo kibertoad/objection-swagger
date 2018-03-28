@@ -92,6 +92,12 @@ describe('transformers', () => {
 								},
 								"type": "array"
 							},
+							"recursiveChildren": {
+								"items": {
+									"type": "object"
+								},
+								"type": "array"
+							},
 							"stringAttr": {
 								"type": "string"
 							},
