@@ -1,8 +1,58 @@
+const ParentModel = require('./models/ParentModel');
+
 const transformers = require('../lib/transformers');
 
 const { assert } = require('chai');
 
-describe('objection-swagger', () => {
+describe('transformers', () => {
+
+	it('enriches schema with relationships', async () => {
+		const schema = ParentModel.jsonSchema;
+		const relationships = ParentModel.relationMappings;
+
+		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships);
+		assert.deepEqual(enrichedSchema, {
+			"additionalProperties": true,
+			"properties": {
+				"children": {
+					"items": {
+						"additionalProperties": true,
+						"description": "child",
+						"properties": {
+							"stringAttr": {
+								"type": "string"
+							},
+							"stringAttrOptional": {
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"stringAttrPrivate": {
+								"private": true,
+								"type": "string"
+							}
+						},
+						"required": [],
+						"title": "ChildModel",
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"stringAttr": {
+					"type": "string"
+				},
+				"stringAttrPrivate": {
+					"private": true,
+					"type": "string"
+				}
+			},
+			"required": [],
+			"title": "ParentModel",
+			"type": "object"
+		});
+	});
+
 	it('transforms swagger query params into correct JSON Schema', async () => {
 		const querySchema = {
 			title: 'SampleQuery',
