@@ -61,3 +61,13 @@ function saveQueryParamSchema(schemaParam, targetDir, opts = {})
  */
 transformers.fromSwaggerQuerySchema(queryModel)
 ```
+
+```
+/**
+ * Creates copy of provided schema and enriches it with attributes that are derived from relationships
+ * @param {Object} schema - JSON Schema
+ * @param {Object} relationships - Objection.js relationMappings
+ * @returns {Object} JSON Schema object
+ */
+transformers.enrichSchemaWithRelationships(schema, relationships)
+```
