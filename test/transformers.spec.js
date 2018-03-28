@@ -20,6 +20,21 @@ describe('transformers', () => {
 						"additionalProperties": true,
 						"description": "child",
 						"properties": {
+							"parent": {
+								"additionalProperties": true,
+								"properties": {
+									"stringAttr": {
+										"type": "string"
+									},
+									"stringAttrPrivate": {
+										"private": true,
+										"type": "string"
+									}
+								},
+								"required": [],
+								"title": "ParentModel",
+								"type": "object"
+							},
 							"stringAttr": {
 								"type": "string"
 							},
@@ -72,6 +87,21 @@ describe('transformers', () => {
 									"additionalProperties": true,
 									"description": "child",
 									"properties": {
+										"parent": {
+											"additionalProperties": true,
+											"properties": {
+												"stringAttr": {
+													"type": "string"
+												},
+												"stringAttrPrivate": {
+													"private": true,
+													"type": "string"
+												}
+											},
+											"required": [],
+											"title": "ParentModel",
+											"type": "object"
+										},
 										"stringAttr": {
 											"type": "string"
 										},
@@ -91,6 +121,21 @@ describe('transformers', () => {
 									"type": "object"
 								},
 								"type": "array"
+							},
+							"parent": {
+								"additionalProperties": true,
+								"properties": {
+									"stringAttr": {
+										"type": "string"
+									},
+									"stringAttrPrivate": {
+										"private": true,
+										"type": "string"
+									}
+								},
+								"required": [],
+								"title": "RecursiveParentModel",
+								"type": "object"
 							},
 							"recursiveChildren": {
 								"items": {
