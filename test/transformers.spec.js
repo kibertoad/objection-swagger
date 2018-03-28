@@ -11,7 +11,7 @@ describe('transformers', () => {
 		const schema = ParentModel.jsonSchema;
 		const relationships = ParentModel.relationMappings;
 
-		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships);
+		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, true);
 		assert.deepEqual(enrichedSchema, {
 			"additionalProperties": true,
 			"properties": {
@@ -69,11 +69,58 @@ describe('transformers', () => {
 		});
 	});
 
+	it('enriches schema with relationships without parent relationships', async () => {
+		const schema = ParentModel.jsonSchema;
+		const relationships = ParentModel.relationMappings;
+
+		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, false);
+		assert.deepEqual(enrichedSchema, {
+			"additionalProperties": true,
+			"properties": {
+				"children": {
+					"items": {
+						"additionalProperties": true,
+						"description": "child",
+						"properties": {
+							"stringAttr": {
+								"type": "string"
+							},
+							"stringAttrOptional": {
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"stringAttrPrivate": {
+								"private": true,
+								"type": "string"
+							}
+						},
+						"required": [],
+						"title": "ChildModel",
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"stringAttr": {
+					"type": "string"
+				},
+				"stringAttrPrivate": {
+					"private": true,
+					"type": "string"
+				}
+			},
+			"required": [],
+			"title": "ParentModel",
+			"type": "object"
+		});
+	});
+
 	it('enriches schema with relationships recursively', async () => {
 		const schema = RecursiveParentModel.jsonSchema;
 		const relationships = RecursiveParentModel.relationMappings;
 
-		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships);
+		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, true);
 		assert.deepEqual(enrichedSchema, {
 			"additionalProperties": true,
 			"properties": {

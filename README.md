@@ -67,7 +67,9 @@ transformers.fromSwaggerQuerySchema(queryModel)
  * Creates copy of provided schema and enriches it with attributes that are derived from relationships
  * @param {Object} schema - JSON Schema
  * @param {Object} relationships - Objection.js relationMappings
+ * @param {boolean} isIncludeParentRelationships - whether ManyToManyRelation and BelongsToOneRelation relationships should be included
+ * @param {Object} [fromModelClass] - model class from which enrichment was initiated
  * @returns {Object} JSON Schema object
  */
-transformers.enrichSchemaWithRelationships(schema, relationships)
+transformers.enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass)
 ```
