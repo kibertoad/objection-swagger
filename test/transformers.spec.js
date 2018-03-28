@@ -1,4 +1,5 @@
 const ParentModel = require('./models/ParentModel');
+const RecursiveParentModel = require('./models/RecursiveParentModel');
 
 const transformers = require('../lib/transformers');
 
@@ -49,6 +50,78 @@ describe('transformers', () => {
 			},
 			"required": [],
 			"title": "ParentModel",
+			"type": "object"
+		});
+	});
+
+	it('enriches schema with relationships recursively', async () => {
+		const schema = RecursiveParentModel.jsonSchema;
+		const relationships = RecursiveParentModel.relationMappings;
+
+		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships);
+		assert.deepEqual(enrichedSchema, {
+			"additionalProperties": true,
+			"properties": {
+				"children": {
+					"items": {
+						"additionalProperties": true,
+						"description": "child",
+						"properties": {
+							"children": {
+								"items": {
+									"additionalProperties": true,
+									"description": "child",
+									"properties": {
+										"stringAttr": {
+											"type": "string"
+										},
+										"stringAttrOptional": {
+											"type": [
+												"string",
+												"null"
+											]
+										},
+										"stringAttrPrivate": {
+											"private": true,
+											"type": "string"
+										}
+									},
+									"required": [],
+									"title": "ChildModel",
+									"type": "object"
+								},
+								"type": "array"
+							},
+							"stringAttr": {
+								"type": "string"
+							},
+							"stringAttrOptional": {
+								"type": [
+									"string",
+									"null"
+								]
+							},
+							"stringAttrPrivate": {
+								"private": true,
+								"type": "string"
+							}
+						},
+						"required": [],
+						"title": "RecursiveChildModel",
+						"type": "object"
+					},
+					"type": "array"
+				},
+				"stringAttr": {
+					"type": "string"
+				},
+				"stringAttrPrivate": {
+					"private": true,
+					"type": "string"
+				}
+			},
+			"required": [],
+			"title": "RecursiveParentModel",
 			"type": "object"
 		});
 	});
