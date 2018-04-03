@@ -37,7 +37,7 @@ function saveSchema(modelParam, targetDir)
  * @param {Options} opts
  * @returns {Promise} - promise that is resolved after yamls are written
  */
-function saveNonModelSchema(schemaParam, targetDir, opts = {}) {
+function saveNonModelSchema(schemaParam, targetDir, opts = {})
 ```
 
 ```
@@ -49,7 +49,27 @@ function saveNonModelSchema(schemaParam, targetDir, opts = {}) {
  * @param {Options} opts
  * @returns {Promise} - promise that is resolved after yamls are written
  */
-function saveQueryParamSchema(schemaParam, targetDir, opts = {}) {
+function saveQueryParamSchema(schemaParam, targetDir, opts = {})
 ```
 
-}
+
+```
+/**
+ * Transforms Swagger query params into correct JSON Schema
+ * @param {Object} queryModel - Swagger query params model
+ * @returns {Object} JSON Schema object
+ */
+transformers.fromSwaggerQuerySchema(queryModel)
+```
+
+```
+/**
+ * Creates copy of provided schema and enriches it with attributes that are derived from relationships
+ * @param {Object} schema - JSON Schema
+ * @param {Object} relationships - Objection.js relationMappings
+ * @param {boolean} isIncludeParentRelationships - whether ManyToManyRelation and BelongsToOneRelation relationships should be included
+ * @param {Object} [fromModelClass] - model class from which enrichment was initiated
+ * @returns {Object} JSON Schema object
+ */
+transformers.enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass)
+```
