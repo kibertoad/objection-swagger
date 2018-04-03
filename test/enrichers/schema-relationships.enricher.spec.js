@@ -1,17 +1,16 @@
-const ParentModel = require('./models/ParentModel');
-const RecursiveParentModel = require('./models/RecursiveParentModel');
+const ParentModel = require('../models/ParentModel');
+const RecursiveParentModel = require('../models/RecursiveParentModel');
 
-const transformers = require('../lib/transformers');
+const enricher = require('../../lib/enrichers/schema.relationships.enricher');
 
 const { assert } = require('chai');
 
-describe('transformers', () => {
-
+describe('schema-relationships.enricher', () => {
 	it('enriches schema with relationships', async () => {
 		const schema = ParentModel.jsonSchema;
 		const relationships = ParentModel.relationMappings;
 
-		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, true);
+		const enrichedSchema = enricher.enrichSchemaWithRelationships(schema, relationships, true);
 		assert.deepEqual(enrichedSchema, {
 			"additionalProperties": true,
 			"properties": {
@@ -73,7 +72,7 @@ describe('transformers', () => {
 		const schema = ParentModel.jsonSchema;
 		const relationships = ParentModel.relationMappings;
 
-		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, false);
+		const enrichedSchema = enricher.enrichSchemaWithRelationships(schema, relationships, false);
 		assert.deepEqual(enrichedSchema, {
 			"additionalProperties": true,
 			"properties": {
@@ -120,7 +119,7 @@ describe('transformers', () => {
 		const schema = RecursiveParentModel.jsonSchema;
 		const relationships = RecursiveParentModel.relationMappings;
 
-		const enrichedSchema = transformers.enrichSchemaWithRelationships(schema, relationships, true);
+		const enrichedSchema = enricher.enrichSchemaWithRelationships(schema, relationships, true);
 		assert.deepEqual(enrichedSchema, {
 			"additionalProperties": true,
 			"properties": {
@@ -221,72 +220,6 @@ describe('transformers', () => {
 			"required": [],
 			"title": "RecursiveParentModel",
 			"type": "object"
-		});
-	});
-
-	it('transforms swagger query params into correct JSON Schema', async () => {
-		const querySchema = {
-			title: 'SampleQuery',
-			items: {
-				type: 'object',
-				properties: {
-					statuses: {
-						in: 'query',
-						description: 'Statuses filter',
-						required: true,
-						type: 'array', items: {
-							type: 'string',
-							enum: ['value1', 'value2']
-						},
-					},
-					userId: {
-						in: 'query',
-						description: 'User ID filter',
-						required: false,
-						type: 'integer'
-					},
-					foodId: {
-						in: 'query',
-						description: 'Food ID filter',
-						required: true,
-						type: 'integer'
-					}
-				}
-			}
-		};
-
-		const result = transformers.fromSwaggerQuerySchema(querySchema);
-		assert.deepEqual(result, {
-			additionalProperties: false,
-			description: undefined,
-			properties: {
-				foodId: {
-					description: 'Food ID filter',
-					in: 'query',
-					type: 'integer'
-				},
-				statuses: {
-					description: 'Statuses filter',
-					in: 'query',
-					items: {
-						enum: [
-							'value1',
-							'value2'
-						],
-						type: 'string'
-					},
-					type: 'array'
-				},
-				userId: {
-					description: 'User ID filter',
-					in: 'query',
-					type: 'integer'
-				}
-			},
-			required: [
-				'statuses', 'foodId'
-			],
-			title: 'SampleQuery'
 		});
 	});
 });

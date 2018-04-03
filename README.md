@@ -59,7 +59,7 @@ function saveQueryParamSchema(schemaParam, targetDir, opts = {})
  * @param {Object} queryModel - Swagger query params model
  * @returns {Object} JSON Schema object
  */
-transformers.fromSwaggerQuerySchema(queryModel)
+function swaggerQueryParamsToSchema(queryModel) {
 ```
 
 ```
@@ -71,5 +71,5 @@ transformers.fromSwaggerQuerySchema(queryModel)
  * @param {Object} [fromModelClass] - model class from which enrichment was initiated
  * @returns {Object} JSON Schema object
  */
-transformers.enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass)
+function enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass) {
 ```

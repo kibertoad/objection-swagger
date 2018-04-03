@@ -7,7 +7,7 @@ const unlinkAsync = promisify(fs.unlink);
 const yaml = require('js-yaml');
 
 const Options = require('../lib/Options');
-const fileWriter = require('../lib/file-writer');
+const yamlWriter = require('../lib/utils/yaml.writer');
 const objectionSwagger = require('../lib/objection-swagger');
 
 const SimpleModel = require('./models/SimpleModel');
@@ -87,15 +87,15 @@ describe('objection-swagger', () => {
 
 		it('saves model schema yaml', async () => {
 			let writeResult;
-			const writeStub = global.sinon.stub(fileWriter, 'writeAll').callsFake((writeParams) => {
+			const writeStub = global.sinon.stub(yamlWriter, 'writeYamlsToFs').callsFake((writeParams) => {
 				writeResult = writeParams;
 			});
 
 			const result = objectionSwagger.saveSchema(SimpleModel, 'dummyDir');
 
 			assert.lengthOf(writeResult, 1);
-			assert.equal(writeResult[0].targetFile, 'dummyDir/SimpleModel.yaml');
-			assert.equal(writeResult[0].data, SIMPLE_MODEL_SCHEMA);
+			assert.equal(writeResult[0].name, 'SimpleModel');
+			assert.equal(writeResult[0].schema, SIMPLE_MODEL_SCHEMA);
 		});
 
 		it('ignores private fields', async () => {
