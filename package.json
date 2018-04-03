@@ -5,6 +5,14 @@
     "type": "git",
     "url": "git+https://github.com/kibertoad/objection-swagger.git"
   },
+  "keywords": [
+    "objection",
+    "objection.js",
+    "swagger",
+    "json",
+    "schema",
+    "json-schema"
+  ],
   "author": "Igor Savin",
   "license": "MIT",
   "scripts": {
