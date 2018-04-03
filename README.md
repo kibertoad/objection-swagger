@@ -1,5 +1,9 @@
 # objection-swagger
-Swagger definition generator for Objection.js models
+Originally designed as Swagger definition generator for Objection.js models. Since then scope was extended to also cover Swagger-compatible snippets generation
+from plain JSON Schema entries as well as set of conversions that are useful for model and schema definition external consumption.
+
+It is highly recommended to use this library together with express-ajv-swagger-validation, express-swagger-oauth-scopes and swagger-jsdoc in backend
+as well as json-schema-to-typescript in the frontend to maximise value from having model definitions as single source of truth.
 
 ```
 /**
@@ -11,9 +15,10 @@ Swagger definition generator for Objection.js models
 /**
  * Generates JSON schemas for inclusion in Swagger specifications from Objection.js models
  * @param {Model|Model[]} modelParam - model(s) to generate schemas for
+ * @param {Options} opts
  * @returns {GeneratedSwaggerYaml[]} generated JSON schemas in YAML format
  */
-function generateSchema(modelParam)
+function generateSchema(modelParam, opts = {})
 ```
 
 ```
@@ -21,10 +26,11 @@ function generateSchema(modelParam)
  * Generates and saves into specified directory JSON schema files for inclusion in Swagger specifications from given
  * Objection.js models
  * @param {Model|Model[]} modelParam - model(s) to generate schemas for
- * @param [string] targetDir - directory to write generated schemas to. Do not add '/' to the end.
+ * @param {string} targetDir - directory to write generated schemas to. Do not add '/' to the end.
+ * @param {Options} opts
  * @returns {Promise} - promise that is resolved after schemas are written
  */
-function saveSchema(modelParam, targetDir)
+function saveSchema(modelParam, targetDir, opts = {})
 ```
 
 
