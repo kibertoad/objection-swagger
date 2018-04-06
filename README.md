@@ -2,6 +2,9 @@
 Originally designed as Swagger definition generator for Objection.js models. Since then scope was extended to also cover Swagger-compatible snippets generation
 from plain JSON Schema entries as well as set of conversions that are useful for model and schema definition external consumption.
 
+  [![NPM Version][npm-image]][npm-url]
+  [![NPM Downloads][downloads-image]][downloads-url]
+
 It is highly recommended to use this library together with express-ajv-swagger-validation, express-swagger-oauth-scopes and swagger-jsdoc in backend
 as well as json-schema-to-typescript in the frontend to maximise value from having model definitions as single source of truth.
 
@@ -79,3 +82,8 @@ function swaggerQueryParamsToSchema(queryModel) {
  */
 function enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass) {
 ```
+
+[npm-image]: https://img.shields.io/npm/v/objection-swagger.svg
+[npm-url]: https://npmjs.org/package/objection-swagger
+[downloads-image]: https://img.shields.io/npm/dm/objection-swagger.svg
+[downloads-url]: https://npmjs.org/package/objection-swagger
