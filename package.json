@@ -1,6 +1,6 @@
 {
   "name": "objection-swagger",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kibertoad/objection-swagger.git"
@@ -23,6 +23,7 @@
     "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
   "dependencies": {
+    "es6-promisify": "^6.0.0",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
     "validation-utils": "^2.0.1"

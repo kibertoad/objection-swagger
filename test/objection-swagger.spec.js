@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const sinon = require("sinon");
 const mkdirp = require("mkdirp-promise");
-const { promisify } = require("util");
+const { promisify } = require("es6-promisify");
 const fs = require("fs");
 const unlinkAsync = promisify(fs.unlink);
 const yaml = require("js-yaml");
@@ -52,7 +52,7 @@ describe("objection-swagger", () => {
   });
 
   describe("generateSchema", () => {
-    it("generates model schema yaml from single model", async () => {
+    it("generates model schema yaml from single model", () => {
       const result = objectionSwagger.generateSchema(SimpleModel);
 
       assert.lengthOf(result, 1);
@@ -60,13 +60,13 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
     });
 
-    it("fails to generate model schema yaml from single model", async () => {
-      assert.throws(() => {
+    it("fails to generate model schema yaml from single model", () => {
+      return assert.throws(() => {
         objectionSwagger.generateSchema(SimpleModelInvalidRequired);
       }, /explicitly defined as required and from model it looks like it is nullable/);
     });
 
-    it("fills required field for a model", async () => {
+    it("fills required field for a model", () => {
       const result = objectionSwagger.generateSchema(SimpleModelNoRequired);
 
       assert.lengthOf(result, 1);
@@ -74,7 +74,7 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA_GENERATED_REQUIRE);
     });
 
-    it("generates model schema yaml from single model, excludes internal fields", async () => {
+    it("generates model schema yaml from single model, excludes internal fields", () => {
       const result = objectionSwagger.generateSchema(SimpleModel, {
         excludeInternalData: true
       });
@@ -84,7 +84,7 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA_NO_INTERNAL);
     });
 
-    it("generates model schema yaml from array of models", async () => {
+    it("generates model schema yaml from array of models", () => {
       const result = objectionSwagger.generateSchema([SimpleModel]);
 
       assert.lengthOf(result, 1);
@@ -92,7 +92,7 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, SIMPLE_MODEL_SCHEMA);
     });
 
-    it("saves model schema yaml", async () => {
+    it("saves model schema yaml", () => {
       let writeResult;
       const writeStub = global.sinon
         .stub(yamlWriter, "writeYamlsToFs")
@@ -107,7 +107,7 @@ describe("objection-swagger", () => {
       assert.equal(writeResult[0].schema, SIMPLE_MODEL_SCHEMA);
     });
 
-    it("ignores private fields", async () => {
+    it("ignores private fields", () => {
       const result = objectionSwagger.generateSchema(ModelWithPrivateFields);
 
       assert.lengthOf(result, 1);
@@ -115,7 +115,7 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, MODEL_WITH_PRIVATE_FIELDS_SCHEMA);
     });
 
-    it("generates parent model schema correctly", async () => {
+    it("generates parent model schema correctly", () => {
       const result = objectionSwagger.generateSchema(ParentModel);
 
       assert.lengthOf(result, 1);
@@ -150,7 +150,7 @@ describe("objection-swagger", () => {
       });
     });
 
-    it("generates nested model schema correctly", async () => {
+    it("generates nested model schema correctly", () => {
       const result = objectionSwagger.generateSchema(NestedModel);
 
       assert.lengthOf(result, 1);
@@ -186,7 +186,7 @@ describe("objection-swagger", () => {
       });
     });
 
-    it("generates parent model with class reference schema correctly", async () => {
+    it("generates parent model with class reference schema correctly", () => {
       const result = objectionSwagger.generateSchema(ParentModelClassReference);
 
       assert.lengthOf(result, 1);
@@ -221,7 +221,7 @@ describe("objection-swagger", () => {
       });
     });
 
-    it("generates parent model with self reference schema correctly", async () => {
+    it("generates parent model with self reference schema correctly", () => {
       const result = objectionSwagger.generateSchema(ParentModelSelfReference);
 
       assert.lengthOf(result, 1);
@@ -229,7 +229,7 @@ describe("objection-swagger", () => {
       assert.equal(result[0].schema, PARENT_MODEL_SELF_REFERENCE);
     });
 
-    it("generates parent model schema without internal fields correctly", async () => {
+    it("generates parent model schema without internal fields correctly", () => {
       const result = objectionSwagger.generateSchema(ParentModel, {
         excludeInternalData: true
       });
@@ -264,7 +264,7 @@ describe("objection-swagger", () => {
       });
     });
 
-    it("generates child model schema correctly", async () => {
+    it("generates child model schema correctly", () => {
       const result = objectionSwagger.generateSchema(ChildModel);
 
       assert.lengthOf(result, 1);
@@ -285,7 +285,7 @@ describe("objection-swagger", () => {
       });
     });
 
-    it("correctly processes model without schema", async () => {
+    it("correctly processes model without schema", () => {
       const result = objectionSwagger.generateSchema(EmptyModel);
       assert.lengthOf(result, 1);
       assert.equal(result[0].name, "EmptyModel");
@@ -294,95 +294,113 @@ describe("objection-swagger", () => {
   });
 
   describe("saveSchema", () => {
-    it("saves model schema yaml from single model", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveSchema(ParentModel, "build", {
-        useEntityRefs: true
-      });
-      await unlinkAsync("build/ParentModel.yaml");
+    it("saves model schema yaml from single model", () => {
+      return mkdirp("build")
+        .then(() => {
+          return objectionSwagger.saveSchema(ParentModel, "build", {
+            useEntityRefs: true
+          });
+        })
+        .then(() => {
+          return unlinkAsync("build/ParentModel.yaml");
+        });
     });
   });
 
   describe("saveNonModelSchema", () => {
-    it("saves non-model schema yaml from single schema", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveNonModelSchema(SimpleResponseSchema, "build");
-      const simpleModelSchema = yaml.load(
-        fs.readFileSync("build/SimpleData.yaml")
-      );
-      await unlinkAsync("build/SimpleData.yaml");
-      assert.deepEqual(simpleModelSchema, {
-        title: "SimpleData",
-        type: "object",
-        additionalProperties: false,
-        properties: {
-          id: {
-            type: "integer"
-          },
-          fieldKey: {
-            type: "string"
-          },
-          fieldText: {
-            type: "string"
-          },
-          isMandatory: {
-            type: "boolean"
-          },
-          isFreeformField: {
-            type: "boolean"
-          }
-        }
-      });
+    it("saves non-model schema yaml from single schema", () => {
+      return mkdirp("build")
+        .then(() => {
+          return objectionSwagger.saveNonModelSchema(
+            SimpleResponseSchema,
+            "build"
+          );
+        })
+        .then(() => {
+          const simpleModelSchema = yaml.load(
+            fs.readFileSync("build/SimpleData.yaml")
+          );
+          assert.deepEqual(simpleModelSchema, {
+            title: "SimpleData",
+            type: "object",
+            additionalProperties: false,
+            properties: {
+              id: {
+                type: "integer"
+              },
+              fieldKey: {
+                type: "string"
+              },
+              fieldText: {
+                type: "string"
+              },
+              isMandatory: {
+                type: "boolean"
+              },
+              isFreeformField: {
+                type: "boolean"
+              }
+            }
+          });
+          return unlinkAsync("build/SimpleData.yaml");
+        });
     });
   });
 
   describe("saveQueryParamSchema", () => {
-    it("saves query param schema yaml from single schema", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveQueryParamSchema(QueryParamSchema, "build");
-      const simpleModelSchema = yaml.load(
-        fs.readFileSync("build/SimpleQuery.yaml")
-      );
-      await unlinkAsync("build/SimpleQuery.yaml");
-      assert.deepEqual(simpleModelSchema, [
-        {
-          description: "The statuses to retrieve data for",
-          in: "query",
-          items: {
-            enum: ["active", "inactive"],
-            type: "string"
-          },
-          name: "statuses",
-          required: true,
-          type: "array"
-        },
-        {
-          description: "The lower bound of the time period",
-          format: "date-time",
-          in: "query",
-          name: "updatedAtFrom",
-          required: false,
-          type: "string"
-        },
-        {
-          description: "The upper bound of the time period",
-          format: "date-time",
-          in: "query",
-          name: "updatedAtTo",
-          required: false,
-          type: "string"
-        },
-        {
-          description: "The assignee id to filter by",
-          in: "query",
-          items: {
-            type: "integer"
-          },
-          name: "assigneeIds",
-          required: true,
-          type: "array"
-        }
-      ]);
+    it("saves query param schema yaml from single schema", () => {
+      return mkdirp("build")
+        .then(() => {
+          return objectionSwagger.saveQueryParamSchema(
+            QueryParamSchema,
+            "build"
+          );
+        })
+        .then(() => {
+          const simpleModelSchema = yaml.load(
+            fs.readFileSync("build/SimpleQuery.yaml")
+          );
+          assert.deepEqual(simpleModelSchema, [
+            {
+              description: "The statuses to retrieve data for",
+              in: "query",
+              items: {
+                enum: ["active", "inactive"],
+                type: "string"
+              },
+              name: "statuses",
+              required: true,
+              type: "array"
+            },
+            {
+              description: "The lower bound of the time period",
+              format: "date-time",
+              in: "query",
+              name: "updatedAtFrom",
+              required: false,
+              type: "string"
+            },
+            {
+              description: "The upper bound of the time period",
+              format: "date-time",
+              in: "query",
+              name: "updatedAtTo",
+              required: false,
+              type: "string"
+            },
+            {
+              description: "The assignee id to filter by",
+              in: "query",
+              items: {
+                type: "integer"
+              },
+              name: "assigneeIds",
+              required: true,
+              type: "array"
+            }
+          ]);
+          return unlinkAsync("build/SimpleQuery.yaml");
+        });
     });
   });
 });
