@@ -17,23 +17,47 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha test/**/*.spec.js",
-    "prettier": "prettier --write \"{lib,tests}/**/*.{js,ts}\"",
-    "eslint": "eslint --format codeframe \"lib/**/*.js\" \"tests/**/*.js\""
+    "test-with-coverage": "nyc mocha --opts \"./mocha.opts\" test",
+    "test-travis": "npm run eslint && nyc mocha --opts \"./mocha.opts\" test",
+    "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\"",
+    "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
   "dependencies": {
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
-    "objection": "^1.1.1",
     "validation-utils": "^2.0.1"
+  },
+  "peerDependencies": {
+    "objection": " >= 1.0.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.17.0",
     "eslint-plugin-prettier": "^2.6.0",
     "mkdirp-promise": "^5.0.1",
-    "mocha": "^5.0.5",
+    "mocha": "^5.1.0",
     "nyc": "^11.6.0",
-    "prettier": "^1.11.1",
+    "objection": "^1.1.5",
+    "prettier": "^1.12.0",
     "sinon": "^4.5.0"
+  },
+  "nyc": {
+    "description": "test coverage",
+    "exclude": [
+      "node_modules",
+      "test",
+      "build"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "cache": true,
+    "all": true,
+    "report-dir": "./build/reports/coverage",
+    "check-coverage": true,
+    "lines": 65,
+    "statements": 65,
+    "functions": 75,
+    "branches": 55
   }
 }

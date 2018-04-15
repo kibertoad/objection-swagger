@@ -1,9 +1,9 @@
-const Model = require('objection').Model;
+const Model = require("objection").Model;
 
 class EmptyModel extends Model {
-	static get jsonSchema() {
-		return null
-	}
+  static get jsonSchema() {
+    return null;
+  }
 }
 
 module.exports = EmptyModel;
