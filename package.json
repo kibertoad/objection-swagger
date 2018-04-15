@@ -23,6 +23,7 @@
     "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
   "dependencies": {
+    "es6-promisify": "^6.0.0",
     "js-yaml": "^3.11.0",
     "lodash": "^4.17.5",
     "validation-utils": "^2.0.1"
@@ -34,7 +35,6 @@
     "chai": "^4.1.2",
     "eslint": "^4.17.0",
     "eslint-plugin-prettier": "^2.6.0",
-    "es6-promisify": "^6.0.0",
     "mkdirp-promise": "^5.0.1",
     "mocha": "^5.1.0",
     "nyc": "^11.6.0",
