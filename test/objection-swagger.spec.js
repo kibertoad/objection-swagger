@@ -297,11 +297,11 @@ describe("objection-swagger", () => {
     it("saves model schema yaml from single model", () => {
       return mkdirp("build")
         .then(() => {
-        return objectionSwagger.saveSchema(ParentModel, "build", {
-          useEntityRefs: true
-        });
-      })
-        .then(() =>{
+          return objectionSwagger.saveSchema(ParentModel, "build", {
+            useEntityRefs: true
+          });
+        })
+        .then(() => {
           return unlinkAsync("build/ParentModel.yaml");
         });
     });
@@ -311,7 +311,10 @@ describe("objection-swagger", () => {
     it("saves non-model schema yaml from single schema", async () => {
       return mkdirp("build")
         .then(() => {
-          return objectionSwagger.saveNonModelSchema(SimpleResponseSchema, "build");
+          return objectionSwagger.saveNonModelSchema(
+            SimpleResponseSchema,
+            "build"
+          );
         })
         .then(() => {
           const simpleModelSchema = yaml.load(
@@ -340,7 +343,7 @@ describe("objection-swagger", () => {
             }
           });
           return unlinkAsync("build/SimpleData.yaml");
-        })
+        });
     });
   });
 
@@ -348,7 +351,10 @@ describe("objection-swagger", () => {
     it("saves query param schema yaml from single schema", async () => {
       return mkdirp("build")
         .then(() => {
-          return objectionSwagger.saveQueryParamSchema(QueryParamSchema, "build");
+          return objectionSwagger.saveQueryParamSchema(
+            QueryParamSchema,
+            "build"
+          );
         })
         .then(() => {
           const simpleModelSchema = yaml.load(
