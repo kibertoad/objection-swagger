@@ -1,7 +1,7 @@
 const assert = require("chai").assert;
 const sinon = require("sinon");
 const mkdirp = require("mkdirp-promise");
-const { promisify } = require("util");
+const { promisify } = require("es6-promisify");
 const fs = require("fs");
 const unlinkAsync = promisify(fs.unlink);
 const yaml = require("js-yaml");
