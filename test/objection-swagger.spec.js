@@ -294,95 +294,107 @@ describe("objection-swagger", () => {
   });
 
   describe("saveSchema", () => {
-    it("saves model schema yaml from single model", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveSchema(ParentModel, "build", {
-        useEntityRefs: true
-      });
-      await unlinkAsync("build/ParentModel.yaml");
+    it("saves model schema yaml from single model", () => {
+      return mkdirp("build")
+        .then(() => {
+        return objectionSwagger.saveSchema(ParentModel, "build", {
+          useEntityRefs: true
+        });
+      })
+        .then(() =>{
+          return unlinkAsync("build/ParentModel.yaml");
+        });
     });
   });
 
   describe("saveNonModelSchema", () => {
     it("saves non-model schema yaml from single schema", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveNonModelSchema(SimpleResponseSchema, "build");
-      const simpleModelSchema = yaml.load(
-        fs.readFileSync("build/SimpleData.yaml")
-      );
-      await unlinkAsync("build/SimpleData.yaml");
-      assert.deepEqual(simpleModelSchema, {
-        title: "SimpleData",
-        type: "object",
-        additionalProperties: false,
-        properties: {
-          id: {
-            type: "integer"
-          },
-          fieldKey: {
-            type: "string"
-          },
-          fieldText: {
-            type: "string"
-          },
-          isMandatory: {
-            type: "boolean"
-          },
-          isFreeformField: {
-            type: "boolean"
-          }
-        }
-      });
+      return mkdirp("build")
+        .then(() => {
+          return objectionSwagger.saveNonModelSchema(SimpleResponseSchema, "build");
+        })
+        .then(() => {
+          const simpleModelSchema = yaml.load(
+            fs.readFileSync("build/SimpleData.yaml")
+          );
+          assert.deepEqual(simpleModelSchema, {
+            title: "SimpleData",
+            type: "object",
+            additionalProperties: false,
+            properties: {
+              id: {
+                type: "integer"
+              },
+              fieldKey: {
+                type: "string"
+              },
+              fieldText: {
+                type: "string"
+              },
+              isMandatory: {
+                type: "boolean"
+              },
+              isFreeformField: {
+                type: "boolean"
+              }
+            }
+          });
+          return unlinkAsync("build/SimpleData.yaml");
+        })
     });
   });
 
   describe("saveQueryParamSchema", () => {
     it("saves query param schema yaml from single schema", async () => {
-      await mkdirp("build");
-      await objectionSwagger.saveQueryParamSchema(QueryParamSchema, "build");
-      const simpleModelSchema = yaml.load(
-        fs.readFileSync("build/SimpleQuery.yaml")
-      );
-      await unlinkAsync("build/SimpleQuery.yaml");
-      assert.deepEqual(simpleModelSchema, [
-        {
-          description: "The statuses to retrieve data for",
-          in: "query",
-          items: {
-            enum: ["active", "inactive"],
-            type: "string"
-          },
-          name: "statuses",
-          required: true,
-          type: "array"
-        },
-        {
-          description: "The lower bound of the time period",
-          format: "date-time",
-          in: "query",
-          name: "updatedAtFrom",
-          required: false,
-          type: "string"
-        },
-        {
-          description: "The upper bound of the time period",
-          format: "date-time",
-          in: "query",
-          name: "updatedAtTo",
-          required: false,
-          type: "string"
-        },
-        {
-          description: "The assignee id to filter by",
-          in: "query",
-          items: {
-            type: "integer"
-          },
-          name: "assigneeIds",
-          required: true,
-          type: "array"
-        }
-      ]);
+      return mkdirp("build")
+        .then(() => {
+          return objectionSwagger.saveQueryParamSchema(QueryParamSchema, "build");
+        })
+        .then(() => {
+          const simpleModelSchema = yaml.load(
+            fs.readFileSync("build/SimpleQuery.yaml")
+          );
+          assert.deepEqual(simpleModelSchema, [
+            {
+              description: "The statuses to retrieve data for",
+              in: "query",
+              items: {
+                enum: ["active", "inactive"],
+                type: "string"
+              },
+              name: "statuses",
+              required: true,
+              type: "array"
+            },
+            {
+              description: "The lower bound of the time period",
+              format: "date-time",
+              in: "query",
+              name: "updatedAtFrom",
+              required: false,
+              type: "string"
+            },
+            {
+              description: "The upper bound of the time period",
+              format: "date-time",
+              in: "query",
+              name: "updatedAtTo",
+              required: false,
+              type: "string"
+            },
+            {
+              description: "The assignee id to filter by",
+              in: "query",
+              items: {
+                type: "integer"
+              },
+              name: "assigneeIds",
+              required: true,
+              type: "array"
+            }
+          ]);
+          return unlinkAsync("build/SimpleQuery.yaml");
+        });
     });
   });
 });
