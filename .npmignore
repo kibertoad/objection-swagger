@@ -2,3 +2,6 @@
 .npmignore
 node_modules/
 README.md
+build/
+test/
+.nyc_output/
