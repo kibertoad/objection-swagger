@@ -1,0 +1,14 @@
+http:
+  port: 8080
+cors:
+  enabledOrigins:
+    - http://localhost:3000
+log:
+  level: info
+swagger:
+  pathToBuiltSwagger: ./swagger/swagger.yaml
+  generateSwaggerOnStartup: true
+db:
+  client: sqlite3
+  connection:
+    filename: app.db

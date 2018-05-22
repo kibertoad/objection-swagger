@@ -1,0 +1,8 @@
+log:
+  level: debug
+swagger:
+  generateSwaggerOnStartup: true
+db:
+  client: sqlite3
+  connection:
+    filename: test.db
