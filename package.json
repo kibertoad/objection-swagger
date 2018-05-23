@@ -47,7 +47,8 @@
     "exclude": [
       "node_modules",
       "test",
-      "build"
+      "build",
+      "examples"
     ],
     "reporter": [
       "html"
