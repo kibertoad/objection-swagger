@@ -5,6 +5,7 @@ const Options = require('./lib/Options');
 
 module.exports = {
 	generateSchema: objectionSwagger.generateSchema,
+  generateSchemaRaw: objectionSwagger.generateSchemaRaw,
 	saveNonModelSchema: objectionSwagger.saveNonModelSchema,
 	saveQueryParamSchema : objectionSwagger.saveQueryParamSchema,
 	saveSchema: objectionSwagger.saveSchema,
