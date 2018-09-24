@@ -19,9 +19,25 @@ as well as json-schema-to-typescript in the frontend to maximise value from havi
  * Generates JSON schemas for inclusion in Swagger specifications from Objection.js models
  * @param {Model|Model[]} modelParam - model(s) to generate schemas for
  * @param {Options} opts
- * @returns {GeneratedSwaggerYaml[]} generated JSON schemas in YAML format
+ * @returns {GeneratedSwaggerYaml[]} generated JSON schemas as strings (in YAML format)
  */
 function generateSchema(modelParam, opts = {})
+```
+
+```
+/**
+ * @typedef {Object} GeneratedSwagger
+ * @property {string} name Name of the model
+ * @property {Object} schema JSON schema
+ */
+
+/**
+ * Generates JSON schemas from Objection.js models
+ * @param {Model|Model[]} modelParam - model(s) to generate schemas for
+ * @param {Options} opts
+ * @returns {GeneratedSwagger[]} generated JSON schemas as objects
+ */
+function generateSchemaRaw(modelParam, opts = {})
 ```
 
 ```

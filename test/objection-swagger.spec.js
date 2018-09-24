@@ -44,7 +44,7 @@ const PARENT_MODEL_SELF_REFERENCE =
 
 describe("objection-swagger", () => {
   beforeEach(() => {
-    global.sinon = sinon.sandbox.create();
+    global.sinon = sinon.createSandbox();
   });
 
   afterEach(() => {
@@ -290,6 +290,16 @@ describe("objection-swagger", () => {
       assert.lengthOf(result, 1);
       assert.equal(result[0].name, "EmptyModel");
       assert.deepEqual(result[0].schema, "{}\n");
+    });
+  });
+
+  describe("generateSchemaRaw", () => {
+    it("generates model schema from single model", () => {
+      const result = objectionSwagger.generateSchemaRaw(SimpleModel);
+
+      assert.lengthOf(result, 1);
+      assert.equal(result[0].name, "SimpleModel");
+      assert.deepEqual(result[0].schema, yaml.load(SIMPLE_MODEL_SCHEMA));
     });
   });
 
