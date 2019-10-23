@@ -1,17 +1,17 @@
-const Model = require("objection").Model;
+const Model = require('objection').Model;
 
 class RecursiveParentModel extends Model {
   static get jsonSchema() {
     return {
-      title: "RecursiveParentModel",
-      type: "object",
+      title: 'RecursiveParentModel',
+      type: 'object',
       required: [],
       additionalProperties: true,
 
       properties: {
-        stringAttr: { type: "string" },
-        stringAttrPrivate: { type: "string", private: true }
-      }
+        stringAttr: { type: 'string' },
+        stringAttrPrivate: { type: 'string', private: true },
+      },
     };
   }
 
@@ -19,13 +19,13 @@ class RecursiveParentModel extends Model {
     return {
       children: {
         relation: Model.HasManyRelation,
-        description: "child entity",
+        description: 'child entity',
         modelClass: `${__dirname}/RecursiveChildModel`,
         join: {
-          from: "parentModels.id",
-          to: "childModels.parentId"
-        }
-      }
+          from: 'parentModels.id',
+          to: 'childModels.parentId',
+        },
+      },
     };
   }
 }

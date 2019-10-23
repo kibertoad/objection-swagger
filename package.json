@@ -18,7 +18,7 @@
   "scripts": {
     "test": "mocha test",
     "test-with-coverage": "nyc mocha --opts \"./mocha.opts\" test",
-    "test-travis": "npm run eslint && nyc mocha --opts \"./mocha.opts\" test",
+    "test:ci": "npm run eslint && nyc mocha --opts \"./mocha.opts\" test",
     "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\"",
     "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
