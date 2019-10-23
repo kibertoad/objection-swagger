@@ -1,7 +1,7 @@
-const express = require("express");
-const httpStatus = require("http-status");
+const express = require('express');
+const httpStatus = require('http-status');
 
-const db = require("../services/db.service");
+const db = require('../services/db.service');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
  *       200:
  *         description: heartbeat report
  */
-router.get("/health-check", async (req, res, next) => {
+router.get('/health-check', async (req, res, next) => {
   //ToDo
 });
 
