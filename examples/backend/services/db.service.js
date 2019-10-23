@@ -1,9 +1,9 @@
-const config = require("config");
-const { connectionUtils, heartbeatChecker } = require("knex-utils");
+const config = require('config');
+const { connectionUtils, heartbeatChecker } = require('knex-utils');
 
-const logger = require("./logging.service");
+const logger = require('./logging.service');
 
-const dbConfig = config.get("db");
+const dbConfig = config.get('db');
 let _knex;
 
 function getKnexInstance() {
@@ -43,5 +43,5 @@ function close() {
 module.exports = {
   getKnexInstance,
   checkHeartBeat,
-  close
+  close,
 };
