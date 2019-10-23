@@ -1,19 +1,19 @@
-const Model = require("objection").Model;
+const Model = require('objection').Model;
 
 class ChildModel extends Model {
   static get jsonSchema() {
     return {
-      title: "ChildModel",
-      type: "object",
-      description: "child",
+      title: 'ChildModel',
+      type: 'object',
+      description: 'child',
       required: [],
       additionalProperties: true,
 
       properties: {
-        stringAttr: { type: "string" },
-        stringAttrOptional: { type: ["string", "null"] },
-        stringAttrPrivate: { type: "string", private: true }
-      }
+        stringAttr: { type: 'string' },
+        stringAttrOptional: { type: ['string', 'null'] },
+        stringAttrPrivate: { type: 'string', private: true },
+      },
     };
   }
 
@@ -23,10 +23,10 @@ class ChildModel extends Model {
         relation: Model.BelongsToOneRelation,
         modelClass: `${__dirname}/ParentModel`,
         join: {
-          from: "childModels.parentId",
-          to: "parentModels.id"
-        }
-      }
+          from: 'childModels.parentId',
+          to: 'parentModels.id',
+        },
+      },
     };
   }
 }

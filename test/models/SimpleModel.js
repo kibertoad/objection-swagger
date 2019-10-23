@@ -1,19 +1,19 @@
-const Model = require("objection").Model;
+const Model = require('objection').Model;
 
 class SimpleModel extends Model {
   static get jsonSchema() {
     return {
-      title: "SimpleModel",
-      type: "object",
+      title: 'SimpleModel',
+      type: 'object',
       required: [],
       additionalProperties: true,
 
       properties: {
-        intAttr: { type: "integer" },
-        stringAttr: { type: "string" },
-        stringAttrOptional: { type: ["string", "null"] },
-        dateTimeAttr: { type: "string", format: "date-time" }
-      }
+        intAttr: { type: 'integer' },
+        stringAttr: { type: 'string' },
+        stringAttrOptional: { type: ['string', 'null'] },
+        dateTimeAttr: { type: 'string', format: 'date-time' },
+      },
     };
   }
 }

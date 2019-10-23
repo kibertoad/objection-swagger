@@ -1,9 +1,9 @@
-const assert = require("chai").assert;
-const Model = require("objection").Model;
-const constants = require("../lib/constants");
+const assert = require('chai').assert;
+const Model = require('objection').Model;
+const constants = require('../lib/constants');
 
-describe("constants", () => {
-  it("are in sync with Objection.js", () => {
+describe('constants', () => {
+  it('are in sync with Objection.js', () => {
     assert.equal(
       constants.BelongsToOneRelation,
       Model.BelongsToOneRelation.name

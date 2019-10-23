@@ -1,12 +1,12 @@
-const ParentModel = require("../models/ParentModel");
-const RecursiveParentModel = require("../models/RecursiveParentModel");
+const ParentModel = require('../models/ParentModel');
+const RecursiveParentModel = require('../models/RecursiveParentModel');
 
-const enricher = require("../../lib/enrichers/schema.relationships.enricher");
+const enricher = require('../../lib/enrichers/schema.relationships.enricher');
 
-const { assert } = require("chai");
+const { assert } = require('chai');
 
-describe("schema-relationships.enricher", () => {
-  it("enriches schema with relationships", async () => {
+describe('schema-relationships.enricher', () => {
+  it('enriches schema with relationships', async () => {
     const schema = ParentModel.jsonSchema;
     const relationships = ParentModel.relationMappings;
 
@@ -21,55 +21,55 @@ describe("schema-relationships.enricher", () => {
         children: {
           items: {
             additionalProperties: true,
-            description: "child",
+            description: 'child',
             properties: {
               parent: {
                 additionalProperties: true,
                 properties: {
                   stringAttr: {
-                    type: "string"
+                    type: 'string',
                   },
                   stringAttrPrivate: {
                     private: true,
-                    type: "string"
-                  }
+                    type: 'string',
+                  },
                 },
                 required: [],
-                title: "ParentModel",
-                type: "object"
+                title: 'ParentModel',
+                type: 'object',
               },
               stringAttr: {
-                type: "string"
+                type: 'string',
               },
               stringAttrOptional: {
-                type: ["string", "null"]
+                type: ['string', 'null'],
               },
               stringAttrPrivate: {
                 private: true,
-                type: "string"
-              }
+                type: 'string',
+              },
             },
             required: [],
-            title: "ChildModel",
-            type: "object"
+            title: 'ChildModel',
+            type: 'object',
           },
-          type: "array"
+          type: 'array',
         },
         stringAttr: {
-          type: "string"
+          type: 'string',
         },
         stringAttrPrivate: {
           private: true,
-          type: "string"
-        }
+          type: 'string',
+        },
       },
       required: [],
-      title: "ParentModel",
-      type: "object"
+      title: 'ParentModel',
+      type: 'object',
     });
   });
 
-  it("enriches schema with relationships without parent relationships", async () => {
+  it('enriches schema with relationships without parent relationships', async () => {
     const schema = ParentModel.jsonSchema;
     const relationships = ParentModel.relationMappings;
 
@@ -84,40 +84,40 @@ describe("schema-relationships.enricher", () => {
         children: {
           items: {
             additionalProperties: true,
-            description: "child",
+            description: 'child',
             properties: {
               stringAttr: {
-                type: "string"
+                type: 'string',
               },
               stringAttrOptional: {
-                type: ["string", "null"]
+                type: ['string', 'null'],
               },
               stringAttrPrivate: {
                 private: true,
-                type: "string"
-              }
+                type: 'string',
+              },
             },
             required: [],
-            title: "ChildModel",
-            type: "object"
+            title: 'ChildModel',
+            type: 'object',
           },
-          type: "array"
+          type: 'array',
         },
         stringAttr: {
-          type: "string"
+          type: 'string',
         },
         stringAttrPrivate: {
           private: true,
-          type: "string"
-        }
+          type: 'string',
+        },
       },
       required: [],
-      title: "ParentModel",
-      type: "object"
+      title: 'ParentModel',
+      type: 'object',
     });
   });
 
-  it("enriches schema with relationships recursively", async () => {
+  it('enriches schema with relationships recursively', async () => {
     const schema = RecursiveParentModel.jsonSchema;
     const relationships = RecursiveParentModel.relationMappings;
 
@@ -132,94 +132,94 @@ describe("schema-relationships.enricher", () => {
         children: {
           items: {
             additionalProperties: true,
-            description: "child",
+            description: 'child',
             properties: {
               children: {
                 items: {
                   additionalProperties: true,
-                  description: "child",
+                  description: 'child',
                   properties: {
                     parent: {
                       additionalProperties: true,
                       properties: {
                         stringAttr: {
-                          type: "string"
+                          type: 'string',
                         },
                         stringAttrPrivate: {
                           private: true,
-                          type: "string"
-                        }
+                          type: 'string',
+                        },
                       },
                       required: [],
-                      title: "ParentModel",
-                      type: "object"
+                      title: 'ParentModel',
+                      type: 'object',
                     },
                     stringAttr: {
-                      type: "string"
+                      type: 'string',
                     },
                     stringAttrOptional: {
-                      type: ["string", "null"]
+                      type: ['string', 'null'],
                     },
                     stringAttrPrivate: {
                       private: true,
-                      type: "string"
-                    }
+                      type: 'string',
+                    },
                   },
                   required: [],
-                  title: "ChildModel",
-                  type: "object"
+                  title: 'ChildModel',
+                  type: 'object',
                 },
-                type: "array"
+                type: 'array',
               },
               parent: {
                 additionalProperties: true,
                 properties: {
                   stringAttr: {
-                    type: "string"
+                    type: 'string',
                   },
                   stringAttrPrivate: {
                     private: true,
-                    type: "string"
-                  }
+                    type: 'string',
+                  },
                 },
                 required: [],
-                title: "RecursiveParentModel",
-                type: "object"
+                title: 'RecursiveParentModel',
+                type: 'object',
               },
               recursiveChildren: {
                 items: {
-                  type: "object"
+                  type: 'object',
                 },
-                type: "array"
+                type: 'array',
               },
               stringAttr: {
-                type: "string"
+                type: 'string',
               },
               stringAttrOptional: {
-                type: ["string", "null"]
+                type: ['string', 'null'],
               },
               stringAttrPrivate: {
                 private: true,
-                type: "string"
-              }
+                type: 'string',
+              },
             },
             required: [],
-            title: "RecursiveChildModel",
-            type: "object"
+            title: 'RecursiveChildModel',
+            type: 'object',
           },
-          type: "array"
+          type: 'array',
         },
         stringAttr: {
-          type: "string"
+          type: 'string',
         },
         stringAttrPrivate: {
           private: true,
-          type: "string"
-        }
+          type: 'string',
+        },
       },
       required: [],
-      title: "RecursiveParentModel",
-      type: "object"
+      title: 'RecursiveParentModel',
+      type: 'object',
     });
   });
 });
