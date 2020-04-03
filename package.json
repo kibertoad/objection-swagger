@@ -1,6 +1,6 @@
 {
   "name": "objection-swagger",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kibertoad/objection-swagger.git"
@@ -23,21 +23,21 @@
     "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
   "dependencies": {
-    "es6-promisify": "^6.0.2",
+    "es6-promisify": "^6.1.0",
     "js-yaml": "^3.13.1",
     "lodash": "^4.17.15",
     "validation-utils": "^4.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^4.19.1",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "mkdirp-promise": "^5.0.1",
-    "mocha": "^5.2.0",
-    "nyc": "^14.1.1",
-    "objection": "^1.6.11",
-    "prettier": "^1.18.2",
-    "sinon": "^7.5.0"
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "objection": "^2.1.3",
+    "prettier": "^2.0.2",
+    "sinon": "^9.0.1"
   },
   "nyc": {
     "description": "test coverage",
