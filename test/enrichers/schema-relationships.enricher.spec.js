@@ -1,5 +1,6 @@
 const ParentModel = require('../models/ParentModel');
 const RecursiveParentModel = require('../models/RecursiveParentModel');
+const ParentModelWithModelPaths = require('../models/ParentModelWithModelPaths');
 
 const enricher = require('../../lib/enrichers/schema.relationships.enricher');
 
@@ -219,6 +220,56 @@ describe('schema-relationships.enricher', () => {
       },
       required: [],
       title: 'RecursiveParentModel',
+      type: 'object',
+    });
+  });
+
+  it('enriches schema with relationships and modelPaths', async () => {
+    const schema = ParentModelWithModelPaths.jsonSchema;
+    const relationships = ParentModelWithModelPaths.relationMappings;
+
+    const enrichedSchema = enricher.enrichSchemaWithRelationships(
+      schema,
+      relationships,
+      false,
+      null,
+      ['not-exist', './test/models']
+    );
+    assert.deepEqual(enrichedSchema, {
+      additionalProperties: true,
+      properties: {
+        children: {
+          items: {
+            additionalProperties: true,
+            description: 'child',
+            properties: {
+              stringAttr: {
+                type: 'string',
+              },
+              stringAttrOptional: {
+                type: ['string', 'null'],
+              },
+              stringAttrPrivate: {
+                private: true,
+                type: 'string',
+              },
+            },
+            required: [],
+            title: 'ChildModel',
+            type: 'object',
+          },
+          type: 'array',
+        },
+        stringAttr: {
+          type: 'string',
+        },
+        stringAttrPrivate: {
+          private: true,
+          type: 'string',
+        },
+      },
+      required: [],
+      title: 'ParentModelWithModelPaths',
       type: 'object',
     });
   });
