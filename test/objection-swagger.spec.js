@@ -17,6 +17,7 @@ const ModelWithPrivateFields = require('./models/ModelWithPrivateFields');
 const ParentModel = require('./models/ParentModel');
 const NestedModel = require('./models/NestedModel');
 const ChildModel = require('./models/ChildModel');
+const ParentModelWithModelPaths = require('./models/ParentModelWithModelPaths');
 const ParentModelClassReference = require('./models/ParentModelClassReference');
 const ParentModelSelfReference = require('./models/ParentModelSelfReference');
 const EmptyModel = require('./models/EmptyModel');
@@ -281,6 +282,41 @@ describe('objection-swagger', () => {
           },
         },
         title: 'ChildModel',
+        type: 'object',
+      });
+    });
+
+    it('generates child model schema with modelPaths correctly', () => {
+      const result = objectionSwagger.generateSchemaRaw(ParentModelWithModelPaths);
+
+      assert.lengthOf(result, 1);
+      assert.equal(result[0].name, 'ParentModelWithModelPaths');
+      assert.deepEqual(result[0].schema, {
+        additionalProperties: true,
+        properties: {
+          children: {
+            description: 'child entity',
+            items: {
+              additionalProperties: true,
+              description: 'child',
+              properties: {
+                stringAttr: {
+                  type: 'string',
+                },
+                stringAttrOptional: {
+                  type: 'string',
+                },
+              },
+              title: 'ChildModel',
+              type: 'object',
+            },
+            type: 'array',
+          },
+          stringAttr: {
+            type: 'string',
+          },
+        },
+        title: 'ParentModelWithModelPaths',
         type: 'object',
       });
     });
