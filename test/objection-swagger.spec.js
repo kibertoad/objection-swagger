@@ -287,7 +287,9 @@ describe('objection-swagger', () => {
     });
 
     it('generates child model schema with modelPaths correctly', () => {
-      const result = objectionSwagger.generateSchemaRaw(ParentModelWithModelPaths);
+      const result = objectionSwagger.generateSchemaRaw(
+        ParentModelWithModelPaths
+      );
 
       assert.lengthOf(result, 1);
       assert.equal(result[0].name, 'ParentModelWithModelPaths');
