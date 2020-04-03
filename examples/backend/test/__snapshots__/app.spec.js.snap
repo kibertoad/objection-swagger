@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`example app returns Swagger document correctly 1`] = `
+Object {
+  "info": Object {
+    "title": "Example application",
+    "version": "1.0.0",
+  },
+  "paths": Object {
+    "/health-check": Object {
+      "get": Object {
+        "description": "Check heartbeat",
+        "produces": Array [
+          "application/json",
+        ],
+        "responses": Object {
+          "200": Object {
+            "description": "heartbeat report",
+          },
+        },
+      },
+    },
+  },
+  "swagger": "2.0",
+}
+`;
