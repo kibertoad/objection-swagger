@@ -17,10 +17,10 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha test",
-    "test-with-coverage": "nyc mocha --opts \"./mocha.opts\" test",
-    "test:ci": "npm run eslint && nyc mocha --opts \"./mocha.opts\" test",
+    "test-with-coverage": "nyc mocha test",
+    "test:ci": "npm run lint && npm run test-with-coverage",
     "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\"",
-    "eslint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
+    "lint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
   "dependencies": {
     "es6-promisify": "^6.1.0",

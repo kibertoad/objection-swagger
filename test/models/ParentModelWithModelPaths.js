@@ -2,7 +2,7 @@ const Model = require('objection').Model;
 
 class ParentModelWithModelPaths extends Model {
   static get modelPaths() {
-    return ['not-exist', './test/models']
+    return ['not-exist', './test/models'];
   }
 
   static get jsonSchema() {
