@@ -94,9 +94,10 @@ function swaggerQueryParamsToSchema(queryModel) {
  * @param {Object} relationships - Objection.js relationMappings
  * @param {boolean} isIncludeParentRelationships - whether ManyToManyRelation and BelongsToOneRelation relationships should be included
  * @param {Object} [fromModelClass] - model class from which enrichment was initiated
+ * @param {string[]} [modelPaths] - model base paths for loading relations when modelClass is a string
  * @returns {Object} JSON Schema object
  */
-function enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass) {
+function enrichSchemaWithRelationships(schema, relationships, isIncludeParentRelationships, fromModelClass, modelPaths) {
 ```
 
 [npm-image]: https://img.shields.io/npm/v/objection-swagger.svg
