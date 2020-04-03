@@ -13,14 +13,15 @@
     "schema",
     "json-schema"
   ],
+  "main": "index.js",
   "author": "Igor Savin",
   "license": "MIT",
   "scripts": {
     "test": "mocha test",
     "test-with-coverage": "nyc mocha test",
     "test:ci": "npm run lint && npm run test-with-coverage",
-    "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\"",
-    "lint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
+    "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\" index.js",
+    "lint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\" index.js"
   },
   "engines": {
     "node": ">=6"
@@ -60,5 +61,11 @@
     "statements": 70,
     "functions": 80,
     "branches": 55
-  }
+  },
+  "files": [
+    "README.md",
+    "LICENSE",
+    "lib/*",
+    "index.js"
+  ]
 }

@@ -4,12 +4,14 @@ const queryParamsToJsonSchemaConverter = require('./lib/converters/query-params-
 const Options = require('./lib/Options');
 
 module.exports = {
-	generateSchema: objectionSwagger.generateSchema,
+  generateSchema: objectionSwagger.generateSchema,
   generateSchemaRaw: objectionSwagger.generateSchemaRaw,
-	saveNonModelSchema: objectionSwagger.saveNonModelSchema,
-	saveQueryParamSchema : objectionSwagger.saveQueryParamSchema,
-	saveSchema: objectionSwagger.saveSchema,
-	enrichSchemaWithRelationships: schemaRelationshipsEnricher.enrichSchemaWithRelationships,
-	swaggerQueryParamsToSchema: queryParamsToJsonSchemaConverter.swaggerQueryParamsToSchema,
-	Options
+  saveNonModelSchema: objectionSwagger.saveNonModelSchema,
+  saveQueryParamSchema: objectionSwagger.saveQueryParamSchema,
+  saveSchema: objectionSwagger.saveSchema,
+  enrichSchemaWithRelationships:
+    schemaRelationshipsEnricher.enrichSchemaWithRelationships,
+  swaggerQueryParamsToSchema:
+    queryParamsToJsonSchemaConverter.swaggerQueryParamsToSchema,
+  Options,
 };
