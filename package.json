@@ -22,6 +22,9 @@
     "prettier": "prettier --write \"{lib,test}/**/*.{js,ts}\"",
     "lint": "eslint --format codeframe \"lib/**/*.js\" \"test/**/*.js\""
   },
+  "engines": {
+    "node": ">=6"
+  },
   "dependencies": {
     "es6-promisify": "^6.1.0",
     "js-yaml": "^3.13.1",
