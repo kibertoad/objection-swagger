@@ -8,8 +8,6 @@ const _ = require('lodash');
 const helmet = require('helmet');
 const config = require('config');
 
-const db = require('./services/db.service');
-const logger = require('./services/logging.service');
 const swaggerService = require('./services/swagger.service');
 
 const swaggerPromise =
@@ -17,8 +15,8 @@ const swaggerPromise =
     ? swaggerService.generateSwagger()
     : Promise.resolve();
 const appPromise = swaggerPromise
-  .then(() => {
-    return swaggerValidator.init(config.swagger.pathToBuiltSwagger, {
+  .then(async () => {
+    swaggerValidator.init(config.swagger.pathToBuiltSwagger, {
       makeOptionalAttributesNullable: true,
       ajvConfigBody: {
         coerceTypes: true,
@@ -28,15 +26,7 @@ const appPromise = swaggerPromise
         useDefaults: true,
       },
     });
-  })
-  .then(async () => {
-    const dbCheckResult = await db.checkHeartBeat();
-    if (dbCheckResult.isOk === false) {
-      logger.error('DB connection error: ', dbCheckResult.error);
-      throw dbCheckResult.error;
-    }
-  })
-  .then(async () => {
+
     const swaggerDocument = await swaggerService.getSwagger();
 
     const app = express();
@@ -45,9 +35,6 @@ const appPromise = swaggerPromise
       origin: config.cors.enabledOrigins,
       credentials: true,
       methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'HEAD', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
-
-      optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
     };
 
     app.disable('x-powered-by');
@@ -80,7 +67,7 @@ const appPromise = swaggerPromise
       if (err instanceof swaggerValidator.InputValidationError) {
         res.status(httpStatus.BAD_REQUEST).json({ details: err.errors });
       } else {
-        logger.error('Internal error: ', err);
+        console.error('Internal error: ', err);
         res
           .status(err.status || httpStatus.INTERNAL_SERVER_ERROR)
           .send('Internal server error');
@@ -89,7 +76,7 @@ const appPromise = swaggerPromise
     return app;
   })
   .catch((e) => {
-    logger.error('Error while starting application: ', e);
+    console.error('Error while starting application: ', e);
     throw e;
   });
 
