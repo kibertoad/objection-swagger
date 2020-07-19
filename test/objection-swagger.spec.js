@@ -6,7 +6,6 @@ const fs = require('fs');
 const unlinkAsync = promisify(fs.unlink);
 const yaml = require('js-yaml');
 
-const Options = require('../lib/Options');
 const yamlWriter = require('../lib/utils/yaml.writer');
 const objectionSwagger = require('../lib/objection-swagger');
 
@@ -95,13 +94,13 @@ describe('objection-swagger', () => {
 
     it('saves model schema yaml', () => {
       let writeResult;
-      const writeStub = global.sinon
+      global.sinon
         .stub(yamlWriter, 'writeYamlsToFs')
         .callsFake((writeParams) => {
           writeResult = writeParams;
         });
 
-      const result = objectionSwagger.saveSchema(SimpleModel, 'dummyDir');
+      objectionSwagger.saveSchema(SimpleModel, 'dummyDir');
 
       assert.lengthOf(writeResult, 1);
       assert.equal(writeResult[0].name, 'SimpleModel');

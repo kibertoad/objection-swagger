@@ -27,21 +27,22 @@
     "node": ">=6"
   },
   "dependencies": {
-    "es6-promisify": "^6.1.0",
-    "js-yaml": "^3.13.1",
-    "lodash": "^4.17.15",
+    "es6-promisify": "^6.1.1",
+    "js-yaml": "^3.14.0",
+    "lodash": "^4.17.19",
     "validation-utils": "^4.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
-    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "mkdirp-promise": "^5.0.1",
-    "mocha": "^7.1.1",
-    "nyc": "^15.0.1",
-    "objection": "^2.1.3",
-    "prettier": "^2.0.2",
-    "sinon": "^9.0.1"
+    "mocha": "^7.2.0",
+    "nyc": "^15.1.0",
+    "objection": "^2.2.1",
+    "prettier": "^2.0.5",
+    "sinon": "^9.0.2"
   },
   "nyc": {
     "description": "test coverage",
