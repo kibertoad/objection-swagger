@@ -1,7 +1,16 @@
 {
+  "extends": [
+    "eslint:recommended",
+    "plugin:prettier/recommended"
+  ],
   "plugins": [
     "prettier"
   ],
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
   "parserOptions": {
     "ecmaVersion": 2017,
     "ecmaFeatures": {
