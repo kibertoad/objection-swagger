@@ -21,7 +21,7 @@
     "js-yaml": "^3.13.1",
     "knex": "^0.20.15",
     "knex-utils": "^4.1.7",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mkdirp-promise": "^5.0.1",
     "objection": "^2.2.1",
     "objection-swagger": "^3.2.0",
