@@ -19,7 +19,7 @@
     "helmet": "~3.22.0",
     "http-status": "^1.4.2",
     "js-yaml": "^3.13.1",
-    "knex": "^0.20.15",
+    "knex": "^2.4.0",
     "knex-utils": "^4.1.7",
     "lodash": "^4.17.21",
     "mkdirp-promise": "^5.0.1",
